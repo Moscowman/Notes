@@ -31,7 +31,7 @@ public class NotesListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static NotesListFragment newInstance(String param1, String param2) {
+    public static NotesListFragment newInstance() {
         NotesListFragment fragment = new NotesListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -116,19 +116,23 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showLandNote(Note currentNote) {
-        NoteFragment detail = NoteFragment.newInstance(currentNote);
+        NoteFragment note = NoteFragment.newInstance(currentNote);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.note_fragment, detail);  // замена фрагмента
+        fragmentTransaction.replace(R.id.note_fragment, note);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
 
     private void showPortNote(Note currentNote) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), NoteActivity.class);
-        intent.putExtra(NoteFragment.ARG_NOTE, currentNote);
-        startActivity(intent);
+        NoteFragment note = NoteFragment.newInstance(currentNote);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, note)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 }
