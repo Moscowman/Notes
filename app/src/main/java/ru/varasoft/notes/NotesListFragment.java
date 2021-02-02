@@ -1,9 +1,11 @@
 package ru.varasoft.notes;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -41,6 +44,7 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
         }
     }
@@ -57,6 +61,37 @@ public class NotesListFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Обработка выбора пункта меню приложения (активити)
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        getActivity().getMenuInflater().inflate(R.menu.notes_list_main_menu, menu);
+        MenuItem search = menu.findItem(R.id.action_search);
+        SearchView searchText = (SearchView) search.getActionView();
+        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -88,7 +123,6 @@ public class NotesListFragment extends Fragment {
         notes[1] = new Note("Заметка 2", "Это заметка", "не я");
         notes[2] = new Note("Заметка 3", "И это заметка", "мы");
         notes[3] = new Note("Заметка 4", "А это - нет", "они");
-
 
         for (int i = 0; i < notes.length; i++) {
             Note note = notes[i];
