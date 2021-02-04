@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_notes_list"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:orderInCategory="100"
+        android:title="@string/notes_list" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:orderInCategory="100"
+        android:title="@string/settings" />
+</menu>
