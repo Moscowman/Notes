@@ -18,4 +18,7 @@
     <dimen name="nav_header_user_email_text_size">24sp</dimen>
     <dimen name="nav_header_padding_dimen">16dp</dimen>
     <dimen name="sizeItemList">24dp</dimen>
+    <dimen name="sizeItemText">24dp</dimen>
+    <dimen name="created_at_size">16dp</dimen>
+
 </resources>

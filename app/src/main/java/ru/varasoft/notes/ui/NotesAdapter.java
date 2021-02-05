@@ -9,15 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+
 import ru.varasoft.notes.Note;
+import ru.varasoft.notes.NotesSource;
 import ru.varasoft.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private Note[] dataSource;
+    private NotesSource dataSource;
     private OnItemClickListener itemClickListener;
 
-    public NotesAdapter(Note[] dataSource) {
+    public NotesAdapter(NotesSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -31,12 +34,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull NotesAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.getTextView().setText(dataSource[i].getText());
+        viewHolder.setData(dataSource.getNoteData(i));
     }
 
     @Override
     public int getItemCount() {
-        return dataSource.length;
+        return dataSource.size();
     }
 
     public void SetOnItemClickListener(OnItemClickListener itemClickListener){
@@ -47,15 +50,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         void onItemClick(View view , int position);
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textView;
+        private TextView title;
+        private TextView note;
+        private TextView creationDateTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = (TextView) itemView;
-            textView.setOnClickListener(new View.OnClickListener() {
+            title = itemView.findViewById(R.id.item_title);
+            note = itemView.findViewById(R.id.item_note);
+            creationDateTime = itemView.findViewById(R.id.item_creation_date_time);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (itemClickListener != null) {
@@ -65,8 +72,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             });
         }
 
-        public TextView getTextView() {
-            return textView;
+        public void setData(Note noteData){
+            title.setText(noteData.getTitle());
+            note.setText(noteData.getText());
+
+            SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+            String strDt = simpleDate.format(noteData.getCreationDateTime());
+            creationDateTime.setText(String.format("Создано: %s", strDt));
         }
     }
 }

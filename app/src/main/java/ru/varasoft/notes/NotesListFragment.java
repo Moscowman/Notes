@@ -31,7 +31,7 @@ import ru.varasoft.notes.ui.NotesAdapter;
 public class NotesListFragment extends Fragment {
 
     public static final String CURRENT_NOTE = "CurrentNote";
-    Note[] notes = new Note[4];
+    NotesSourceImpl notes;
     private Note currentNote;
     private boolean isLandscape;
 
@@ -66,11 +66,13 @@ public class NotesListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initList(view);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
+        notes = new NotesSourceImpl();
+        notes.init();
         initRecyclerView(recyclerView, notes);
 
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, Note[] data){
+    private void initRecyclerView(RecyclerView recyclerView, NotesSource data){
 
         recyclerView.setHasFixedSize(true);
 
@@ -83,7 +85,7 @@ public class NotesListFragment extends Fragment {
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                currentNote = notes[position];
+                currentNote = notes.getNoteData(position);
                 showNote(currentNote);
             }
         });
@@ -139,7 +141,7 @@ public class NotesListFragment extends Fragment {
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
         } else {
-            currentNote = notes[0];
+            currentNote = notes.getNoteData(0);
         }
 
         if (isLandscape) {
@@ -149,10 +151,6 @@ public class NotesListFragment extends Fragment {
 
     private void initList(View view) {
         FrameLayout layoutView = (FrameLayout) view;
-        notes[0] = new Note("Заметка 1", "Траляля", "я");
-        notes[1] = new Note("Заметка 2", "Это заметка", "не я");
-        notes[2] = new Note("Заметка 3", "И это заметка", "мы");
-        notes[3] = new Note("Заметка 4", "А это - нет", "они");
     }
 
     private void showNote(Note currentNote) {
