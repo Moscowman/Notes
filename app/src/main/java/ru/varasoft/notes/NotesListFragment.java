@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,11 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import ru.varasoft.notes.ui.NotesAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +32,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class NotesListFragment extends Fragment {
 
     public static final String CURRENT_NOTE = "CurrentNote";
-    Note[] notes = new Note[4];
+    NotesSourceImpl notes;
     private Note currentNote;
     private boolean isLandscape;
 
@@ -52,8 +58,46 @@ public class NotesListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
+        return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initList(view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
+        notes = new NotesSourceImpl();
+        notes.init();
+        initRecyclerView(recyclerView, notes);
+
+    }
+
+    private void initRecyclerView(RecyclerView recyclerView, NotesSource data){
+
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        NotesAdapter adapter = new NotesAdapter(data);
+        recyclerView.setAdapter(adapter);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),  LinearLayoutManager.VERTICAL);
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
+        recyclerView.addItemDecoration(itemDecoration);
+
+
+        adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                currentNote = notes.getNoteData(position);
+                showNote(currentNote);
+            }
+        });
+
+    }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -103,7 +147,7 @@ public class NotesListFragment extends Fragment {
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
         } else {
-            currentNote = notes[0];
+            currentNote = notes.getNoteData(0);
         }
 
         if (isLandscape) {
@@ -111,34 +155,8 @@ public class NotesListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initList(view);
-    }
-
     private void initList(View view) {
-        LinearLayout layoutView = (LinearLayout) view;
-        notes[0] = new Note("Заметка 1", "Траляля", "я");
-        notes[1] = new Note("Заметка 2", "Это заметка", "не я");
-        notes[2] = new Note("Заметка 3", "И это заметка", "мы");
-        notes[3] = new Note("Заметка 4", "А это - нет", "они");
-
-        for (int i = 0; i < notes.length; i++) {
-            Note note = notes[i];
-            TextView tv = new TextView(getContext());
-            tv.setText(note.getTitle());
-            tv.setTextSize(30);
-            layoutView.addView(tv);
-            final int fi = i;
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    currentNote = notes[fi];
-                    showNote(currentNote);
-                }
-            });
-        }
+        FrameLayout layoutView = (FrameLayout) view;
     }
 
     private void showNote(Note currentNote) {
