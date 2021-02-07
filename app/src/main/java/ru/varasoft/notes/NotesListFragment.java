@@ -168,13 +168,16 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showLandNote(Note currentNote) {
-        NoteFragment note = NoteFragment.newInstance(currentNote);
-
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.note_fragment, note);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.note_fragment);
+        if (fragment instanceof NoteFragment) {
+            fragmentManager.popBackStack();
+        } else {
+            fragmentTransaction.replace(R.id.note_fragment, NoteFragment.newInstance(currentNote));
+            fragmentTransaction.commit();
+        }
     }
 
     private void showPortNote(Note currentNote) {

@@ -6,7 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -24,11 +28,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
 
-        notesListFragment = NotesListFragment.newInstance();
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, notesListFragment)
-                .commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        Fragment fragment = fragmentManager.findFragmentById(R.id.note_fragment);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                fragment instanceof NoteFragment) {
+            fragmentManager.popBackStack();
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, new NotesListFragment());
+            fragmentTransaction.commit();
+        }
     }
 
     private Toolbar initToolbar() {
