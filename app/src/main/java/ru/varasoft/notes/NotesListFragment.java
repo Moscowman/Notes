@@ -1,19 +1,28 @@
 package ru.varasoft.notes;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import ru.varasoft.notes.ui.NotesAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +32,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class NotesListFragment extends Fragment {
 
     public static final String CURRENT_NOTE = "CurrentNote";
-    Note[] notes = new Note[4];
+    NotesSourceImpl notes;
     private Note currentNote;
     private boolean isLandscape;
 
@@ -31,7 +40,7 @@ public class NotesListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static NotesListFragment newInstance(String param1, String param2) {
+    public static NotesListFragment newInstance() {
         NotesListFragment fragment = new NotesListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -41,6 +50,7 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
         }
     }
@@ -48,8 +58,46 @@ public class NotesListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
+        return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initList(view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
+        notes = new NotesSourceImpl();
+        notes.init();
+        initRecyclerView(recyclerView, notes);
+
+    }
+
+    private void initRecyclerView(RecyclerView recyclerView, NotesSource data){
+
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        NotesAdapter adapter = new NotesAdapter(data);
+        recyclerView.setAdapter(adapter);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),  LinearLayoutManager.VERTICAL);
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
+        recyclerView.addItemDecoration(itemDecoration);
+
+
+        adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                currentNote = notes.getNoteData(position);
+                showNote(currentNote);
+            }
+        });
+
+    }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -57,6 +105,37 @@ public class NotesListFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Обработка выбора пункта меню приложения (активити)
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        getActivity().getMenuInflater().inflate(R.menu.notes_list_main_menu, menu);
+        MenuItem search = menu.findItem(R.id.action_search);
+        SearchView searchText = (SearchView) search.getActionView();
+        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -68,7 +147,7 @@ public class NotesListFragment extends Fragment {
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
         } else {
-            currentNote = notes[0];
+            currentNote = notes.getNoteData(0);
         }
 
         if (isLandscape) {
@@ -76,35 +155,8 @@ public class NotesListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initList(view);
-    }
-
     private void initList(View view) {
-        LinearLayout layoutView = (LinearLayout) view;
-        notes[0] = new Note("Заметка 1", "Траляля", "я");
-        notes[1] = new Note("Заметка 2", "Это заметка", "не я");
-        notes[2] = new Note("Заметка 3", "И это заметка", "мы");
-        notes[3] = new Note("Заметка 4", "А это - нет", "они");
-
-
-        for (int i = 0; i < notes.length; i++) {
-            Note note = notes[i];
-            TextView tv = new TextView(getContext());
-            tv.setText(note.getTitle());
-            tv.setTextSize(30);
-            layoutView.addView(tv);
-            final int fi = i;
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    currentNote = notes[fi];
-                    showNote(currentNote);
-                }
-            });
-        }
+        FrameLayout layoutView = (FrameLayout) view;
     }
 
     private void showNote(Note currentNote) {
@@ -116,19 +168,23 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showLandNote(Note currentNote) {
-        NoteFragment detail = NoteFragment.newInstance(currentNote);
+        NoteFragment note = NoteFragment.newInstance(currentNote);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.note_fragment, detail);  // замена фрагмента
+        fragmentTransaction.replace(R.id.note_fragment, note);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
 
     private void showPortNote(Note currentNote) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), NoteActivity.class);
-        intent.putExtra(NoteFragment.ARG_NOTE, currentNote);
-        startActivity(intent);
+        NoteFragment note = NoteFragment.newInstance(currentNote);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, note)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 }
