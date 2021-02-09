@@ -74,7 +74,7 @@ public class NotesListFragment extends Fragment {
 
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, NotesSource data){
+    private void initRecyclerView(RecyclerView recyclerView, NotesSource data) {
 
         recyclerView.setHasFixedSize(true);
 
@@ -84,7 +84,7 @@ public class NotesListFragment extends Fragment {
         NotesAdapter adapter = new NotesAdapter(data);
         recyclerView.setAdapter(adapter);
 
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),  LinearLayoutManager.VERTICAL);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
         recyclerView.addItemDecoration(itemDecoration);
 
@@ -172,13 +172,8 @@ public class NotesListFragment extends Fragment {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        Fragment fragment = fragmentManager.findFragmentById(R.id.note_fragment);
-        if (fragment instanceof NoteFragment) {
-            fragmentManager.popBackStack();
-        } else {
-            fragmentTransaction.replace(R.id.note_fragment, NoteFragment.newInstance(currentNote));
-            fragmentTransaction.commit();
-        }
+        fragmentTransaction.replace(R.id.note_fragment, NoteFragment.newInstance(currentNote));
+        fragmentTransaction.commit();
     }
 
     private void showPortNote(Note currentNote) {

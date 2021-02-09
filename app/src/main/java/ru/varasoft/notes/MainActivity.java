@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     NotesListFragment notesListFragment;
 
+    String NOTES_LIST_FRAGMENT = "NotesListFragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
