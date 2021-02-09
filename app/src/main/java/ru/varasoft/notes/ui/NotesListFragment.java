@@ -1,4 +1,4 @@
-package ru.varasoft.notes;
+package ru.varasoft.notes.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +20,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ru.varasoft.notes.ui.NotesAdapter;
+import ru.varasoft.notes.data.Note;
+import ru.varasoft.notes.data.NotesSource;
+import ru.varasoft.notes.data.NotesSourceImpl;
+import ru.varasoft.notes.R;
 
 /**
  * A simple {@link Fragment} subclass.

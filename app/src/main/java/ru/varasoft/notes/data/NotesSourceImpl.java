@@ -1,6 +1,4 @@
-package ru.varasoft.notes;
-
-import android.content.res.Resources;
+package ru.varasoft.notes.data;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,10 @@
-package ru.varasoft.notes;
+package ru.varasoft.notes.ui;
 
 import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
+
+import ru.varasoft.notes.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 

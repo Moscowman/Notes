@@ -16,6 +16,10 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
+import ru.varasoft.notes.ui.NoteFragment;
+import ru.varasoft.notes.ui.NotesListFragment;
+import ru.varasoft.notes.ui.SettingsFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     NotesListFragment notesListFragment;

@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 
-import ru.varasoft.notes.Note;
-import ru.varasoft.notes.NotesSource;
+import ru.varasoft.notes.data.Note;
+import ru.varasoft.notes.data.NotesSource;
 import ru.varasoft.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {

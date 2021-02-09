@@ -1,13 +1,9 @@
-package ru.varasoft.notes;
+package ru.varasoft.notes.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+
+import ru.varasoft.notes.data.Note;
+import ru.varasoft.notes.R;
 
 /**
  * A simple {@link Fragment} subclass.
