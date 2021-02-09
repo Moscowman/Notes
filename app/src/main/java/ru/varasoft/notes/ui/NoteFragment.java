@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.text.SimpleDateFormat;
 
 import ru.varasoft.notes.data.Note;
@@ -53,11 +55,11 @@ public class NoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note, container, false);
-        TextView titleTextView = view.findViewById(R.id.title_text_view);
-        titleTextView.setText(String.format("%s %s", getResources().getString(R.string.title), note.getTitle()));
+        TextInputEditText titleTextInputEditText = view.findViewById(R.id.title_text_input_edit_text);
+        titleTextInputEditText.setText(note.getTitle());
 
-        TextView creatorTextView = view.findViewById(R.id.creator_text_view);
-        creatorTextView.setText(String.format("%s %s", getResources().getString(R.string.creator), note.getCreator()));
+        TextInputEditText creatorTextView = view.findViewById(R.id.creator_text_input_edit_text);
+        creatorTextView.setText(note.getCreator());
 
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
@@ -69,7 +71,7 @@ public class NoteFragment extends Fragment {
         strDt = simpleDate.format(note.getModificationDateTime());
         modificationDateTimeTextView.setText(String.format("%s %s", getResources().getString(R.string.modification_date_time), strDt));
 
-        TextView noteTextView = view.findViewById(R.id.note_text_view);
+        TextInputEditText noteTextView = view.findViewById(R.id.note_text_input_edit_text);
         noteTextView.setText(note.getText());
         return view;
     }
