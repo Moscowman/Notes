@@ -96,12 +96,12 @@ public class NoteFragment extends Fragment {
         simpleDate = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
         creationDateTimeTextView = view.findViewById(R.id.creation_date_time_text_view);
-        String strDt = simpleDate.format(note.getCreationDateTime());
-        creationDateTimeTextView.setText(String.format("%s %s", getResources().getString(R.string.creation_date_time), strDt));
+        String stringOfDate = simpleDate.format(note.getCreationDateTime());
+        creationDateTimeTextView.setText(String.format("%s %s", getResources().getString(R.string.creation_date_time), stringOfDate));
 
         modificationDateTimeTextView = view.findViewById(R.id.modification_date_time_text_view);
-        strDt = simpleDate.format(note.getModificationDateTime());
-        modificationDateTimeTextView.setText(String.format("%s %s", getResources().getString(R.string.modification_date_time), strDt));
+        stringOfDate = simpleDate.format(note.getModificationDateTime());
+        modificationDateTimeTextView.setText(String.format("%s %s", getResources().getString(R.string.modification_date_time), stringOfDate));
 
         noteTextView = view.findViewById(R.id.note_text_input_edit_text);
         noteTextView.setText(note.getText());
@@ -131,12 +131,9 @@ public class NoteFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Обработка выбора пункта меню приложения (активити)
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -82,9 +82,7 @@ public class NotesListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initList(view);
         recyclerView = view.findViewById(R.id.recycler_view_lines);
-        /*notes = new NotesSourceImpl();
-        notes.init();*/
-        initRecyclerView(recyclerView, notes);
+         initRecyclerView(recyclerView, notes);
 
     }
 
@@ -170,8 +168,6 @@ public class NotesListFragment extends Fragment {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                return true;
             case R.id.action_add:
                 navigation.addFragment(NoteFragment.newInstance(), true);
                 publisher.subscribe(new Observer() {

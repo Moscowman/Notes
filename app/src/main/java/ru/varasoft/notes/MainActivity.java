@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -18,9 +16,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import ru.varasoft.notes.data.Publisher;
 import ru.varasoft.notes.ui.Navigation;
-import ru.varasoft.notes.ui.NoteFragment;
 import ru.varasoft.notes.ui.NotesListFragment;
-import ru.varasoft.notes.ui.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -84,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_notes_list:
                 getNavigation().addFragment(notesListFragment, false);
-                return true;
-            case R.id.action_settings:
-                getNavigation().addFragment(new SettingsFragment(), true);
                 return true;
         }
         return false;

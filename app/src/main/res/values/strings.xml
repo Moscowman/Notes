@@ -1,18 +1,10 @@
 <resources>
     <string name="app_name">Notes</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_note">NoteActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
-    <string name="title">Заголовок:</string>
-    <string name="creator">Создатель:</string>
-    <string name="creation_date_time">Дата и время создания:</string>
-    <string name="modification_date_time">Дата и время изменения:</string>
-    <string name="settings">Settings</string>
+
+    <string name="title">Title:</string>
+    <string name="creator">Creator:</string>
+    <string name="creation_date_time">Creation date and time:</string>
+    <string name="modification_date_time">Modification date and time:</string>
     <string name="search">Search</string>
     <string name="share">Share</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -20,21 +12,8 @@
     <string name="username">Vadim</string>
     <string name="user_email">vraspopin@inbox.ru</string>
     <string name="notes_list">Notes list</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="note_text">Текст заметки</string>
+    <string name="note_text">Note text</string>
     <string name="add">Add</string>
     <string name="clear">Clear</string>
     <string name="update">Update</string>
