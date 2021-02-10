@@ -6,34 +6,50 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
+import ru.varasoft.notes.data.Publisher;
+import ru.varasoft.notes.ui.Navigation;
+import ru.varasoft.notes.ui.NotesListFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     NotesListFragment notesListFragment;
+
+    private Navigation navigation;
+    private Publisher publisher = new Publisher();
+
+    String NOTES_LIST_FRAGMENT = "NotesListFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        navigation = new Navigation(getSupportFragmentManager());
         Toolbar toolbar = initToolbar();
+        if (savedInstanceState == null) {
+            notesListFragment = NotesListFragment.newInstance();
+            getNavigation().addFragment(notesListFragment, false);
+        }
         initDrawer(toolbar);
 
-        notesListFragment = NotesListFragment.newInstance();
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, notesListFragment)
-                .commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
     }
 
     private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         return toolbar;
     }
 
@@ -63,16 +79,28 @@ public class MainActivity extends AppCompatActivity {
     private boolean navigateFragment(int id) {
         switch (id) {
             case R.id.action_notes_list:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, notesListFragment)
-                        .commit();
-                return true;
-            case R.id.action_settings:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new SettingsFragment())
-                        .commit();
+                getNavigation().addFragment(notesListFragment, false);
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public Navigation getNavigation() {
+        return navigation;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
     }
 }

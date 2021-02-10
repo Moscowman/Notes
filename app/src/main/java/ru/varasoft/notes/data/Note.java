@@ -1,11 +1,8 @@
-package ru.varasoft.notes;
+package ru.varasoft.notes.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 

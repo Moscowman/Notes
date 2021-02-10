@@ -6,27 +6,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="255"
-    tools:context=".NoteFragment">
+    tools:context=".ui.NoteFragment">
 
-    <TextView
-        android:id="@+id/title_text_view"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/title_text_input_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/creator_text_view"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/title_text_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/title" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/creator_text_input_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/creator"
-        android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_text_view" />
+        app:layout_constraintTop_toBottomOf="@id/title_text_input_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/creator_text_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/creator" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/creation_date_time_text_view"
@@ -36,7 +46,7 @@
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/creator_text_view" />
+        app:layout_constraintTop_toBottomOf="@id/creator_text_input_layout" />
 
     <TextView
         android:id="@+id/modification_date_time_text_view"
@@ -48,15 +58,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/creation_date_time_text_view" />
 
-    <TextView
-        android:id="@+id/note_text_view"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/modification_date_time_text_view" />
+        app:layout_constraintTop_toBottomOf="@id/modification_date_time_text_view">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/note_text_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/note_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Заметки</string>
+    <string name="title">Заголовок:</string>
+    <string name="creator">Создатель:</string>
+    <string name="creation_date_time">Дата и время создания:</string>
+    <string name="modification_date_time">Дата и время изменения:</string>
+    <string name="user_email">vraspopin@inbox.ru</string>
+    <string name="note_text">Текст заметки</string>
+    <string name="add">Добави ть</string>
+    <string name="clear">Очистить</string>
+    <string name="update">Обновить</string>
+    <string name="delete">Удалить</string>
+    <string name="notes_list">Список заметок</string>
+    <string name="username">Вадим</string>
+    <string name="share">Поделиться</string>
+    <string name="search">Найти</string>
+    <string name="navigation_drawer_open">Открыть навигационную панель</string>
+    <string name="navigation_drawer_close">Закрыть навигационную панель</string>
+</resources>
