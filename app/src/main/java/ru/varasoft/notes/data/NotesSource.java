@@ -1,6 +1,8 @@
 package ru.varasoft.notes.data;
 
 public interface NotesSource {
+    NotesSource init(NotesSourceResponse cardsSourceResponse);
+
     Note getNoteData(int position);
 
     int size();

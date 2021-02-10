@@ -29,11 +29,15 @@ public class NotesSourceImpl implements NotesSource, Parcelable {
         }
     };
 
-    public NotesSourceImpl init()/*Временный хардкод, нет смысла выносить в ресурсы*/{
+    public NotesSourceImpl init(NotesSourceResponse notesSourceResponse)/*Временный хардкод, нет смысла выносить в ресурсы*/{
         dataSource.add(new Note("Заметка 1", "Траляля", "я"));
         dataSource.add(new Note("Заметка 2", "Это заметка", "не я"));
         dataSource.add(new Note("Заметка 3", "И это заметка", "мы"));
         dataSource.add(new Note("Заметка 4", "А это - нет", "они"));
+
+        if (notesSourceResponse != null){
+            notesSourceResponse.initialized(this);
+        }
         return this;
     }
 
