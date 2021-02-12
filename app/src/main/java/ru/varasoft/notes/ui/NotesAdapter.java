@@ -19,7 +19,7 @@ import ru.varasoft.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private final NotesSource dataSource;
+    private NotesSource dataSource;
     private OnItemClickListener itemClickListener;
     private final Fragment fragment;
 
@@ -29,9 +29,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return menuPosition;
     }
 
-    public NotesAdapter(NotesSource dataSource, Fragment fragment) {
-        this.dataSource = dataSource;
+    public NotesAdapter(Fragment fragment) {
         this.fragment = fragment;
+    }
+
+    public void setDataSource(NotesSource dataSource){
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
     }
 
     @NonNull

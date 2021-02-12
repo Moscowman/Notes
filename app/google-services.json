@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "384801365612",
+    "project_id": "notes-b4bf6",
+    "storage_bucket": "notes-b4bf6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384801365612:android:0389c8cd17f707e4a94249",
+        "android_client_info": {
+          "package_name": "ru.varasoft.notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384801365612-751npf21n39p1p05ekbul7l3g7e3hr7r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.varasoft.notes",
+            "certificate_hash": "71f1cbc162275c8091504d3589a685e018b8b2e6"
+          }
+        },
+        {
+          "client_id": "384801365612-031k4p61no7879k5najv2njqhbplb00a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeXp0zkX_9vHu4ZD3i7MUtS0gQt02vdnU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384801365612-031k4p61no7879k5najv2njqhbplb00a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
