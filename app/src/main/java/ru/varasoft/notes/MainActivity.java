@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity {
         }
         initDrawer(toolbar);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
     }
 
     private Toolbar initToolbar() {
