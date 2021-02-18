@@ -1,10 +1,12 @@
 package ru.varasoft.notes.data;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,7 +55,7 @@ public class NotesSourceFirebaseImpl implements NotesSource, Parcelable {
         }
     };
 
-    public NotesSourceFirebaseImpl init(NotesSourceResponse notesSourceResponse)/*Временный хардкод, нет смысла выносить в ресурсы*/{
+    public NotesSourceFirebaseImpl init(NotesSourceResponse notesSourceResponse)/*Временный хардкод, нет смысла выносить в ресурсы*/ {
         collection.orderBy(NoteDataMapping.Fields.CREATION_DATE_TIME, Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     // При удачном считывании данных загрузим список карточек
@@ -90,8 +92,8 @@ public class NotesSourceFirebaseImpl implements NotesSource, Parcelable {
     }
 
     @Override
-    public int size(){
-        if (dataSource == null){
+    public int size() {
+        if (dataSource == null) {
             return 0;
         }
         return dataSource.size();
@@ -110,20 +112,21 @@ public class NotesSourceFirebaseImpl implements NotesSource, Parcelable {
 
     @Override
     public void addNote(Note note) {
-
         collection.add(NoteDataMapping.toDocument(note)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 note.setId(documentReference.getId());
             }
-        });    }
+        });
+    }
 
     @Override
     public void clearNoteData() {
-        for (Note note: dataSource) {
+        for (Note note : dataSource) {
             collection.document(note.getId()).delete();
         }
-        dataSource = new ArrayList<Note>();    }
+        dataSource = new ArrayList<Note>();
+    }
 
     @Override
     public int describeContents() {
