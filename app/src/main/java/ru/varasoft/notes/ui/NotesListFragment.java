@@ -24,14 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.varasoft.notes.MainActivity;
+import ru.varasoft.notes.R;
 import ru.varasoft.notes.data.Note;
-import ru.varasoft.notes.data.NoteDataMapping;
 import ru.varasoft.notes.data.NotesSource;
 import ru.varasoft.notes.data.NotesSourceFirebaseImpl;
-import ru.varasoft.notes.data.NotesSourceImpl;
-import ru.varasoft.notes.R;
 import ru.varasoft.notes.data.NotesSourceResponse;
 import ru.varasoft.notes.data.Observer;
+import ru.varasoft.notes.data.OnDeleteDialogListener;
+import ru.varasoft.notes.data.OnEditNoteDialogListener;
 import ru.varasoft.notes.data.Publisher;
 
 
@@ -48,6 +48,8 @@ public class NotesListFragment extends Fragment {
     private Publisher publisher;
     private boolean moveToFirstPosition;
     NotesAdapter adapter;
+
+    private int modificationPosition;
 
     public NotesListFragment() {
         // Required empty public constructor
@@ -141,21 +143,42 @@ public class NotesListFragment extends Fragment {
         int position = adapter.getMenuPosition();
         switch (item.getItemId()) {
             case R.id.action_update:
-                navigation.addFragment(NoteFragment.newInstance(notes.getNoteData(position)), true);
-                publisher.subscribe(new Observer() {
-                    @Override
-                    public void updateNote(Note note) {
-                        notes.updateNote(position, note);
-                        adapter.notifyItemChanged(position);
-                    }
-                });
+                updateNote();
                 return true;
             case R.id.action_delete:
-                notes.deleteNote(position);
-                adapter.notifyItemRemoved(position);
+                deleteNote(position);
                 return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void deleteNote(int position) {
+        modificationPosition = position;
+        DeleteNoteDialogFragment dialogFragment = new DeleteNoteDialogFragment();
+        dialogFragment.setOnDialogListener(deleteDialogListener);
+        dialogFragment.show(requireActivity().getSupportFragmentManager(),
+                "delete_dialog_fragment");
+    }
+
+    private void updateNote() {
+        modificationPosition = adapter.getMenuPosition();
+        currentNote = notes.getNoteData(modificationPosition);
+        EditNoteDialogFragment updateNoteDialogFragment = new EditNoteDialogFragment();
+        updateNoteDialogFragment.setOnDialogListener(updateNoteDialogListener);
+        Bundle args = new Bundle();
+        args.putString("title", currentNote.getTitle());
+        args.putString("creator", currentNote.getCreator());
+        args.putString("text", currentNote.getText());
+        updateNoteDialogFragment.setArguments(args);
+        updateNoteDialogFragment.show(requireActivity().getSupportFragmentManager(),
+                "update_dialog_fragment");
+    }
+
+    private void addNote() {
+        EditNoteDialogFragment addNoteDialogFragment = new EditNoteDialogFragment();
+        addNoteDialogFragment.setOnDialogListener(addNoteDialogListener);
+        addNoteDialogFragment.show(requireActivity().getSupportFragmentManager(),
+                "add_dialog_fragment");
     }
 
     @Override
@@ -216,33 +239,13 @@ public class NotesListFragment extends Fragment {
     private boolean onItemSelected(int menuItemId) {
         switch (menuItemId) {
             case R.id.action_add:
-                navigation.addFragment(NoteFragment.newInstance(), true);
-                publisher.subscribe(new Observer() {
-                    @Override
-                    public void updateNote(Note note) {
-                        notes.addNote(note);
-                        adapter.notifyItemInserted(notes.size() - 1);
-                        // это сигнал, чтобы вызванный метод onCreateView
-                        // перепрыгнул на начало списка
-                        moveToFirstPosition = true;
-                    }
-                });
+                addNote();
                 return true;
             case R.id.action_update:
-                final int updatePosition = adapter.getMenuPosition();
-                navigation.addFragment(NoteFragment.newInstance(notes.getNoteData(updatePosition)), true);
-                publisher.subscribe(new Observer() {
-                    @Override
-                    public void updateNote(Note note) {
-                        notes.updateNote(updatePosition, note);
-                        adapter.notifyItemChanged(updatePosition);
-                    }
-                });
+                updateNote();
                 return true;
             case R.id.action_delete:
-                int deletePosition = adapter.getMenuPosition();
-                notes.deleteNote(deletePosition);
-                adapter.notifyItemRemoved(deletePosition);
+                deleteNote(adapter.getMenuPosition());
                 return true;
             case R.id.action_clear:
                 notes.clearNoteData();
@@ -278,4 +281,46 @@ public class NotesListFragment extends Fragment {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
+
+    private OnDeleteDialogListener deleteDialogListener = new OnDeleteDialogListener() {
+        @Override
+        public void onDialogDelete() {
+            notes.deleteNote(modificationPosition);
+            adapter.notifyItemRemoved(modificationPosition);
+        }
+
+        @Override
+        public void onDialogCancel() {
+        }
+    };
+
+    private OnEditNoteDialogListener updateNoteDialogListener = new OnEditNoteDialogListener() {
+        @Override
+        public void onDialogUpdate(Bundle bundle) {
+            currentNote.setTitle(bundle.getString("title"));
+            currentNote.setCreator(bundle.getString("creator"));
+            currentNote.setText(bundle.getString("text"));
+            notes.updateNote(modificationPosition, currentNote);
+            adapter.notifyItemChanged(modificationPosition);
+        }
+
+        @Override
+        public void onDialogCancel() {
+        }
+    };
+
+    private OnEditNoteDialogListener addNoteDialogListener = new OnEditNoteDialogListener() {
+        @Override
+        public void onDialogUpdate(Bundle bundle) {
+            currentNote = new Note(bundle.getString("title"), bundle.getString("text"), bundle.getString("creator"));
+            notes.addNote(currentNote);
+            adapter.notifyItemInserted(notes.size() - 1);
+            moveToFirstPosition = true;
+        }
+
+        @Override
+        public void onDialogCancel() {
+        }
+    };
+
 }

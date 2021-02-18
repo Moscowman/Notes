@@ -78,6 +78,10 @@ public class Note implements Parcelable {
         return creator;
     }
 
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
