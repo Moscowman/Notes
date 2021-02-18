@@ -4,14 +4,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import ru.varasoft.notes.MainActivity;
 import ru.varasoft.notes.R;
 import ru.varasoft.notes.data.OnDeleteDialogListener;
 
@@ -26,9 +24,9 @@ public class DeleteNoteDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final View contentView = requireActivity().getLayoutInflater().inflate(R.layout.dialog_custom, null);
+        final View contentView = requireActivity().getLayoutInflater().inflate(R.layout.delete_dialog_custom, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
-                .setTitle(R.string.title_dialog)
+                .setTitle(R.string.title_delete_dialog)
                 .setView(contentView)
                 .setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                     @Override

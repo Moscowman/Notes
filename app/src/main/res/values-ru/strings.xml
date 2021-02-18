@@ -17,7 +17,8 @@
     <string name="search">Найти</string>
     <string name="navigation_drawer_open">Открыть навигационную панель</string>
     <string name="navigation_drawer_close">Закрыть навигационную панель</string>
-    <string name="title_dialog">Удалить заметку?</string>
+    <string name="title_delete_dialog">Удалить заметку?</string>
     <string name="delete_button">Удалить</string>
     <string name="cancel_button">Отменить</string>
+    <string name="ok_button">OK</string>
 </resources>
