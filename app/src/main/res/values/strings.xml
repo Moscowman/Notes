@@ -18,4 +18,7 @@
     <string name="clear">Clear</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_button">Delete</string>
+    <string name="title_dialog">Delete note?</string>
 </resources>

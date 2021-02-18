@@ -32,6 +32,7 @@ import ru.varasoft.notes.data.NotesSourceImpl;
 import ru.varasoft.notes.R;
 import ru.varasoft.notes.data.NotesSourceResponse;
 import ru.varasoft.notes.data.Observer;
+import ru.varasoft.notes.data.OnDeleteDialogListener;
 import ru.varasoft.notes.data.Publisher;
 
 
@@ -48,6 +49,8 @@ public class NotesListFragment extends Fragment {
     private Publisher publisher;
     private boolean moveToFirstPosition;
     NotesAdapter adapter;
+
+    private int deletePosition;
 
     public NotesListFragment() {
         // Required empty public constructor
@@ -151,8 +154,11 @@ public class NotesListFragment extends Fragment {
                 });
                 return true;
             case R.id.action_delete:
-                notes.deleteNote(position);
-                adapter.notifyItemRemoved(position);
+                deletePosition = position;
+                DeleteNoteDialogFragment dialogFragment = new DeleteNoteDialogFragment();
+                dialogFragment.setOnDialogListener(dialogListener);
+                dialogFragment.show(requireActivity().getSupportFragmentManager(),
+                        "dialog_fragment");
                 return true;
         }
         return super.onContextItemSelected(item);
@@ -240,9 +246,11 @@ public class NotesListFragment extends Fragment {
                 });
                 return true;
             case R.id.action_delete:
-                int deletePosition = adapter.getMenuPosition();
-                notes.deleteNote(deletePosition);
-                adapter.notifyItemRemoved(deletePosition);
+                deletePosition = adapter.getMenuPosition();
+                DeleteNoteDialogFragment dialogFragment = new DeleteNoteDialogFragment();
+                dialogFragment.setOnDialogListener(dialogListener);
+                dialogFragment.show(requireActivity().getSupportFragmentManager(),
+                        "dialog_fragment");
                 return true;
             case R.id.action_clear:
                 notes.clearNoteData();
@@ -278,4 +286,16 @@ public class NotesListFragment extends Fragment {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
+
+    private OnDeleteDialogListener dialogListener = new OnDeleteDialogListener() {
+        @Override
+        public void onDialogDelete() {
+            notes.deleteNote(deletePosition);
+            adapter.notifyItemRemoved(deletePosition);
+        }
+        @Override
+        public void onDialogCancel() {
+        }
+    };
+
 }
